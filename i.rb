@@ -4,9 +4,21 @@
 # A command line tool for journals
 # Author: Jim Fung
  
-input = ARGV.join(' ')
+class ArgumentReader
+  def initialize(input, log_path)
+    @input = input
+    @log_path = log_path
+  end
 
-File.open(File.expand_path('~/code/i/log.txt'), 'w') do |f|
-  f << Time.now.to_s
-  f << input
+  def to_s
+    "#{Time.now} - #{@input.join(' ')}"
+  end 
+
+  def write_to_file
+    File.open(File.expand_path(@log_path), 'a') do |f|
+      f.puts to_s
+   end   
+  end
 end
+
+ArgumentReader.new(ARGV, '~/code/i/log.txt').write_to_file
